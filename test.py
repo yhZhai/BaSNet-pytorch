@@ -7,6 +7,7 @@ import json
 from eval.eval_detection import ANETdetection
 from tqdm import tqdm
 
+
 def test(net, config, logger, test_loader, test_info, step, model_file=None):
     with torch.no_grad():
         net.eval()
@@ -23,7 +24,7 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
         num_total = 0.
 
         load_iter = iter(test_loader)
-        
+
         for i in range(len(test_loader.dataset)):
 
             _data, _label, _, vid_name, vid_num_seg = next(load_iter)
@@ -34,7 +35,7 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
             _, cas_base, score_supp, cas_supp, fore_weights = net(_data)
 
             label_np = _label.cpu().numpy()
-            score_np = score_supp[0,:-1].cpu().data.numpy()
+            score_np = score_supp[0, :-1].cpu().data.numpy()
 
             score_np[np.where(score_np < config.class_thresh)] = 0
             score_np[np.where(score_np >= config.class_thresh)] = 1
@@ -43,7 +44,7 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
 
             num_correct += np.sum((correct_pred == config.num_classes).astype(np.float32))
             num_total += correct_pred.shape[0]
-            
+
             cas_base = utils.minmax_norm(cas_base)
             cas_supp = utils.minmax_norm(cas_supp)
 
@@ -54,7 +55,7 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
                 cas_pred = np.reshape(cas_pred, (config.num_segments, -1, 1))
 
                 cas_pred = utils.upgrade_resolution(cas_pred, config.scale)
-                
+
                 proposal_dict = {}
 
                 for i in range(len(config.act_thresh)):
@@ -69,7 +70,8 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
                         seg_list.append(pos)
 
                     proposals = utils.get_proposal_oic(seg_list, cas_temp, score_np, pred, config.scale, \
-                                    vid_num_seg[0].cpu().item(), config.feature_fps, config.num_segments)
+                                                       vid_num_seg[0].cpu().item(), config.feature_fps,
+                                                       config.num_segments)
 
                     for i in range(len(proposals)):
                         class_id = proposals[i][0][0]
@@ -94,8 +96,8 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
 
         tIoU_thresh = np.linspace(0.1, 0.9, 9)
         anet_detection = ANETdetection(config.gt_path, json_path,
-                                   subset='test', tiou_thresholds=tIoU_thresh,
-                                   verbose=False, check_status=False)
+                                       subset='test', tiou_thresholds=tIoU_thresh,
+                                       verbose=False, check_status=False)
         mAP, average_mAP = anet_detection.evaluate()
 
         logger.log_value('Test accuracy', test_acc, step)

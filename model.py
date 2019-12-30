@@ -1,18 +1,19 @@
 import torch
 import torch.nn as nn
 
+
 class Filter_Module(nn.Module):
     def __init__(self, len_feature):
         super(Filter_Module, self).__init__()
         self.len_feature = len_feature
         self.conv_1 = nn.Sequential(
             nn.Conv1d(in_channels=self.len_feature, out_channels=512, kernel_size=1,
-                    stride=1, padding=0),
+                      stride=1, padding=0),
             nn.LeakyReLU()
         )
         self.conv_2 = nn.Sequential(
             nn.Conv1d(in_channels=512, out_channels=1, kernel_size=1,
-                    stride=1, padding=0),
+                      stride=1, padding=0),
             nn.Sigmoid()
         )
 
@@ -25,7 +26,7 @@ class Filter_Module(nn.Module):
         out = out.permute(0, 2, 1)
         # out: (B, T, 1)
         return out
-        
+
 
 class CAS_Module(nn.Module):
     def __init__(self, len_feature, num_classes):
@@ -36,7 +37,7 @@ class CAS_Module(nn.Module):
                       stride=1, padding=1),
             nn.LeakyReLU()
         )
-                
+
         self.conv_2 = nn.Sequential(
             nn.Conv1d(in_channels=2048, out_channels=2048, kernel_size=3,
                       stride=1, padding=1),
@@ -61,6 +62,7 @@ class CAS_Module(nn.Module):
         # out: (B, T, C + 1)
         return out
 
+
 class BaS_Net(nn.Module):
     def __init__(self, len_feature, num_classes, num_segments):
         super(BaS_Net, self).__init__()
@@ -74,7 +76,6 @@ class BaS_Net(nn.Module):
 
         self.num_segments = num_segments
         self.k = num_segments // 8
-    
 
     def forward(self, x):
         fore_weights = self.filter_module(x)

@@ -12,7 +12,8 @@ import config
 
 
 class ThumosFeature(data.Dataset):
-    def __init__(self, data_path, mode, modal, feature_fps, num_segments, len_feature, sampling, seed=-1, supervision='weak'):
+    def __init__(self, data_path, mode, modal, feature_fps, num_segments, len_feature, sampling, seed=-1,
+                 supervision='weak'):
         if seed >= 0:
             utils.set_seed(seed)
 
@@ -41,12 +42,11 @@ class ThumosFeature(data.Dataset):
         self.anno = json.load(anno_file)
         anno_file.close()
 
-        self.class_name_to_idx = dict((v, k) for k, v in config.class_dict.items())        
+        self.class_name_to_idx = dict((v, k) for k, v in config.class_dict.items())
         self.num_classes = len(self.class_name_to_idx.keys())
 
         self.supervision = supervision
         self.sampling = sampling
-
 
     def __len__(self):
         return len(self.vid_list)
@@ -64,9 +64,9 @@ class ThumosFeature(data.Dataset):
 
         if self.modal == 'all':
             rgb_feature = np.load(os.path.join(self.feature_path[0],
-                                    vid_name + '.npy')).astype(np.float32)
+                                               vid_name + '.npy')).astype(np.float32)
             flow_feature = np.load(os.path.join(self.feature_path[1],
-                                    vid_name + '.npy')).astype(np.float32)
+                                                vid_name + '.npy')).astype(np.float32)
 
             vid_num_seg = rgb_feature.shape[0]
 
@@ -83,7 +83,7 @@ class ThumosFeature(data.Dataset):
             feature = np.concatenate((rgb_feature, flow_feature), axis=1)
         else:
             feature = np.load(os.path.join(self.feature_path,
-                                    vid_name + '.npy')).astype(np.float32)
+                                           vid_name + '.npy')).astype(np.float32)
 
             vid_num_seg = feature.shape[0]
 
@@ -126,12 +126,11 @@ class ThumosFeature(data.Dataset):
                     tmp_start = round(tmp_start_sec * t_factor)
                     tmp_end = round(tmp_end_sec * t_factor)
 
-                    temp_anno[tmp_start:tmp_end+1, class_idx] = 1
+                    temp_anno[tmp_start:tmp_end + 1, class_idx] = 1
 
             temp_anno = temp_anno[sample_idx, :]
 
             return label, torch.from_numpy(temp_anno)
-
 
     def random_perturb(self, length):
         if self.num_segments == length:
@@ -150,14 +149,9 @@ class ThumosFeature(data.Dataset):
                     samples[i] = int(samples[i])
         return samples.astype(int)
 
-
     def uniform_sampling(self, length):
         if self.num_segments == length:
             return np.arange(self.num_segments).astype(int)
         samples = np.arange(self.num_segments) * length / self.num_segments
         samples = np.floor(samples)
         return samples.astype(int)
-
-
-
-

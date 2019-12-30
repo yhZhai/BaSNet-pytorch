@@ -1,6 +1,7 @@
 import numpy as np
 import os
 
+
 class Config(object):
     def __init__(self, args):
         self.lr = eval(args.lr)
@@ -29,22 +30,22 @@ class Config(object):
 
 
 class_dict = {0: 'BaseballPitch',
-                1: 'BasketballDunk',
-                2: 'Billiards',
-                3: 'CleanAndJerk',
-                4: 'CliffDiving',
-                5: 'CricketBowling',
-                6: 'CricketShot',
-                7: 'Diving',
-                8: 'FrisbeeCatch',
-                9: 'GolfSwing',
-                10: 'HammerThrow',
-                11: 'HighJump',
-                12: 'JavelinThrow',
-                13: 'LongJump',
-                14: 'PoleVault',
-                15: 'Shotput',
-                16: 'SoccerPenalty',
-                17: 'TennisSwing',
-                18: 'ThrowDiscus',
-                19: 'VolleyballSpiking'}
+              1: 'BasketballDunk',
+              2: 'Billiards',
+              3: 'CleanAndJerk',
+              4: 'CliffDiving',
+              5: 'CricketBowling',
+              6: 'CricketShot',
+              7: 'Diving',
+              8: 'FrisbeeCatch',
+              9: 'GolfSwing',
+              10: 'HammerThrow',
+              11: 'HighJump',
+              12: 'JavelinThrow',
+              13: 'LongJump',
+              14: 'PoleVault',
+              15: 'Shotput',
+              16: 'SoccerPenalty',
+              17: 'TennisSwing',
+              18: 'ThrowDiscus',
+              19: 'VolleyballSpiking'}

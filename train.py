@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
+
 class BaS_Net_loss(nn.Module):
     def __init__(self, alpha):
         super(BaS_Net_loss, self).__init__()
@@ -13,7 +14,7 @@ class BaS_Net_loss(nn.Module):
 
         label_base = torch.cat((label, torch.ones((label.shape[0], 1)).cuda()), dim=1)
         label_supp = torch.cat((label, torch.zeros((label.shape[0], 1)).cuda()), dim=1)
-        
+
         label_base = label_base / torch.sum(label_base, dim=1, keepdim=True)
         label_supp = label_supp / torch.sum(label_supp, dim=1, keepdim=True)
 
@@ -29,6 +30,7 @@ class BaS_Net_loss(nn.Module):
         loss["loss_total"] = loss_total
 
         return loss_total, loss
+
 
 def train(net, train_loader, loader_iter, optimizer, criterion, logger, step):
     net.train()

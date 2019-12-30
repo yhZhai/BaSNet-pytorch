@@ -16,7 +16,8 @@ def upgrade_resolution(arr, scale):
     return up_scale
 
 
-def get_proposal_oic(tList, wtcam, final_score, c_pred, scale, v_len, sampling_frames, num_segments, lambda_=0.25, gamma=0.2):
+def get_proposal_oic(tList, wtcam, final_score, c_pred, scale, v_len, sampling_frames, num_segments, lambda_=0.25,
+                     gamma=0.2):
     t_factor = (16 * v_len) / (scale * num_segments * sampling_frames)
     temp = []
     for i in range(len(tList)):
@@ -31,8 +32,9 @@ def get_proposal_oic(tList, wtcam, final_score, c_pred, scale, v_len, sampling_f
                 outer_s = max(0, int(grouped_temp_list[j][0] - lambda_ * len_proposal))
                 outer_e = min(int(wtcam.shape[0] - 1), int(grouped_temp_list[j][-1] + lambda_ * len_proposal))
 
-                outer_temp_list = list(range(outer_s, int(grouped_temp_list[j][0]))) + list(range(int(grouped_temp_list[j][-1] + 1), outer_e + 1))
-                
+                outer_temp_list = list(range(outer_s, int(grouped_temp_list[j][0]))) + list(
+                    range(int(grouped_temp_list[j][-1] + 1), outer_e + 1))
+
                 if len(outer_temp_list) == 0:
                     outer_score = 0
                 else:
@@ -65,19 +67,19 @@ def save_best_record_thumos(test_info, file_path):
     fo.write("Step: {}\n".format(test_info["step"][-1]))
     fo.write("Test_acc: {:.2f}\n".format(test_info["test_acc"][-1]))
     fo.write("average_mAP: {:.4f}\n".format(test_info["average_mAP"][-1]))
-    
+
     tIoU_thresh = np.linspace(0.1, 0.9, 9)
     for i in range(len(tIoU_thresh)):
         fo.write("mAP@{:.1f}: {:.4f}\n".format(tIoU_thresh[i], test_info["mAP@{:.1f}".format(tIoU_thresh[i])][-1]))
 
     fo.close()
-  
+
 
 def minmax_norm(act_map):
     max_val = nn.ReLU()(torch.max(act_map, dim=1)[0])
     min_val = nn.ReLU()(torch.min(act_map, dim=1)[0])
     delta = max_val - min_val
-    delta[delta <=0] = 1
+    delta[delta <= 0] = 1
     ret = (act_map - min_val) / delta
 
     return ret
@@ -114,5 +116,5 @@ def set_seed(seed):
     np.random.seed(seed)
     torch.cuda.manual_seed_all(seed)
     random.seed(seed)
-    torch.backends.cudnn.deterministic=True
-    torch.backends.cudnn.benchmark=False
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False

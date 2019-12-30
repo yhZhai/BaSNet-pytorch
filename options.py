@@ -2,6 +2,7 @@ import argparse
 import shutil
 import os
 
+
 def parse_args():
     descript = 'Pytorch Implementation of Background Suppression Network (BaS-Net)'
     parser = argparse.ArgumentParser(description=descript)
