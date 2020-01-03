@@ -12,9 +12,10 @@ class BaS_Net_loss(nn.Module):
     def forward(self, score_base, score_supp, fore_weights, label):
         loss = {}
 
-        label_base = torch.cat((label, torch.ones((label.shape[0], 1)).cuda()), dim=1)
-        label_supp = torch.cat((label, torch.zeros((label.shape[0], 1)).cuda()), dim=1)
+        label_base = torch.cat((label, torch.ones((label.shape[0], 1)).cuda()), dim=1)  # batch, class + 1
+        label_supp = torch.cat((label, torch.zeros((label.shape[0], 1)).cuda()), dim=1)  # batch, class + 1
 
+        # Normalized multi-hot vector
         label_base = label_base / torch.sum(label_base, dim=1, keepdim=True)
         label_supp = label_supp / torch.sum(label_supp, dim=1, keepdim=True)
 
