@@ -6,11 +6,11 @@ import os
 def parse_args():
     descript = 'Pytorch Implementation of Background Suppression Network (BaS-Net)'
     parser = argparse.ArgumentParser(description=descript)
-
+    model_name = 'BaSnet'
     parser.add_argument('--data_path', type=str, default='./dataset/THUMOS14')
-    parser.add_argument('--model_path', type=str, default='./models/BaSnet')
-    parser.add_argument('--output_path', type=str, default='./outputs/BaSnet')
-    parser.add_argument('--log_path', type=str, default='./logs/BaSnet')
+    parser.add_argument('--model_path', type=str, default='./models/{}'.format(model_name))
+    parser.add_argument('--output_path', type=str, default='./outputs/{}'.format(model_name))
+    parser.add_argument('--log_path', type=str, default='./logs/{}'.format(model_name))
     parser.add_argument('--modal', type=str, default='all', choices=['rgb', 'flow', 'all'])
     parser.add_argument('--alpha', type=float, default=0.0001)
     parser.add_argument('--class_th', type=float, default=0.25)
@@ -20,6 +20,7 @@ def parse_args():
     parser.add_argument('--seed', type=int, default=-1, help='random seed (-1 for no manual seed)')
     parser.add_argument('--model_file', type=str, default=None, help='the path of pre-trained model file')
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--bg_loss', type=float, default=0)
 
     return init_args(parser.parse_args())
 

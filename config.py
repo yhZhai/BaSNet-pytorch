@@ -19,6 +19,7 @@ class Config(object):
         self.log_path = args.log_path
         self.num_workers = args.num_workers
         self.alpha = args.alpha
+        self.bg_loss = args.bg_loss
         self.class_thresh = args.class_th
         self.act_thresh = np.arange(0.0, 0.25, 0.025)
         self.scale = 24

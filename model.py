@@ -81,14 +81,18 @@ class BaS_Net(nn.Module):
         fore_weights = self.filter_module(x)
 
         x_supp = fore_weights * x
+        x_bg = (1 - fore_weights) * x
 
         cas_base = self.cas_module(x)
         cas_supp = self.cas_module(x_supp)
+        cas_bg = self.cas_module(x_bg)
 
         score_base = torch.mean(torch.topk(cas_base, self.k, dim=1)[0], dim=1)
         score_supp = torch.mean(torch.topk(cas_supp, self.k, dim=1)[0], dim=1)
+        score_bg = torch.mean(torch.topk(cas_bg, self.k, dim=1)[0], dim=1)
 
         score_base = self.softmax(score_base)
         score_supp = self.softmax(score_supp)
+        score_bg = self.softmax(score_bg)
 
-        return score_base, cas_base, score_supp, cas_supp, fore_weights
+        return score_base, cas_base, score_supp, cas_supp, fore_weights, score_bg

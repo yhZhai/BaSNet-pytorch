@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     best_mAP = -1
 
-    criterion = BaS_Net_loss(config.alpha)
+    criterion = BaS_Net_loss(config.alpha, bg_loss=config.bg_loss)
 
     optimizer = torch.optim.Adam(net.parameters(), lr=config.lr[0],
                                  betas=(0.9, 0.999), weight_decay=0.0005)

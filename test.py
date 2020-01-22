@@ -32,7 +32,7 @@ def test(net, config, logger, test_loader, test_info, step, model_file=None):
             _data = _data.cuda()
             _label = _label.cuda()
 
-            _, cas_base, score_supp, cas_supp, fore_weights = net(_data)
+            _, cas_base, score_supp, cas_supp, fore_weights, _ = net(_data)
 
             label_np = _label.cpu().numpy()
             score_np = score_supp[0, :-1].cpu().data.numpy()

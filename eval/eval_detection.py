@@ -167,7 +167,7 @@ class ANETdetection(object):
         ground_truth_by_label = self.ground_truth.groupby('label')
         prediction_by_label = self.prediction.groupby('label')
 
-        results = Parallel(n_jobs=4)(
+        results = Parallel(n_jobs=8)(
             delayed(compute_average_precision_detection)(
                 ground_truth=ground_truth_by_label.get_group(cidx).reset_index(drop=True),
                 prediction=self._get_predictions_with_label(prediction_by_label, label_name, cidx),
